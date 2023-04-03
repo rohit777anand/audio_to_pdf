@@ -1,14 +1,30 @@
-import pyttsx3, PyPDF2
+import pyttsx3
+import PyPDF2
 
-pdfreader = PyPDF2.PdfFileReader(open('story.pdf','rb'))
-speaker = pyttsx3.init()
+def pdf_to_audio(pdf_path, audio_path):
+    """
+    Converts a PDF file to an audio file using text-to-speech technology.
 
-for page_num in range(pdfreader.numPages):
-    text = pdfreader.getPage(page_num).extract_text()
+    Parameters:
+    pdf_path (str): The path to the PDF file.
+    audio_path (str): The path to save the audio file.
+
+    Returns:
+    None
+    """
+
+    # Initialize the PDF reader and text-to-speech engine
+    pdf_reader = PyPDF2.PdfFileReader(open(pdf_path, 'rb'))
+    speaker = pyttsx3.init()
+
+    # Loop through each page in the PDF file and extract the text
+    text = ''
+    for page_num in range(pdf_reader.numPages):
+        page = pdf_reader.getPage(page_num)
+        text += page.extract_text()
+
+    # Clean the text and convert it to audio
     clean_text = text.strip().replace('\n', ' ')
-    print(clean_text)
-
-speaker.save_to_file(clean_text , 'story.mp3')
-speaker.runAndWait()
-
-speaker.stop()
+    speaker.save_to_file(clean_text, audio_path)
+    speaker.runAndWait()
+    speaker.stop()
