@@ -23,8 +23,15 @@ def pdf_to_audio(pdf_path, audio_path):
         page = pdf_reader.getPage(page_num)
         text += page.extract_text()
 
-    # Clean the text and convert it to audio
+    # Clean the text: Remove leading/trailing spaces, and replace newlines with spaces
     clean_text = text.strip().replace('\n', ' ')
+
+    # Convert the cleaned text to audio
     speaker.save_to_file(clean_text, audio_path)
     speaker.runAndWait()
     speaker.stop()
+
+# Example usage
+pdf_file_path = 'example.pdf'
+audio_output_path = 'output_audio.mp3'
+pdf_to_audio(pdf_file_path, audio_output_path)
