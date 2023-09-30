@@ -1,7 +1,7 @@
 import pyttsx3
 import PyPDF2
 
-def pdf_to_audio(pdf_path, audio_path):
+def pdf_to_audio(pdf_path, audio_path) -> None:
     """
     Converts a PDF file to an audio file using text-to-speech technology.
 
