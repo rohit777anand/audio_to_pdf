@@ -1,7 +1,11 @@
-import pyttsx3
+#Importing PDF reader PyPDF2
 import PyPDF2
+#Importing Google Text to Speech library
+from gtts import gTTS
 
-def pdf_to_audio(pdf_path, audio_path) -> None:
+
+
+def pdf_to_audio(pdf_path) -> None:
     """
     Converts a PDF file to an audio file using text-to-speech technology.
 
@@ -15,23 +19,26 @@ def pdf_to_audio(pdf_path, audio_path) -> None:
 
     # Initialize the PDF reader and text-to-speech engine
     pdf_reader = PyPDF2.PdfFileReader(open(pdf_path, 'rb'))
-    speaker = pyttsx3.init()
+    count = pdf_reader.numPages  # counts number of pages in pdf
 
     # Loop through each page in the PDF file and extract the text
     text = ''
-    for page_num in range(pdf_reader.numPages):
+    for page_num in range(count):
         page = pdf_reader.getPage(page_num)
         text += page.extract_text()
 
     # Clean the text: Remove leading/trailing spaces, and replace newlines with spaces
     clean_text = text.strip().replace('\n', ' ')
 
+    #Set language to english (en)
+    language = 'en' 
+
     # Convert the cleaned text to audio
-    speaker.save_to_file(clean_text, audio_path)
-    speaker.runAndWait()
-    speaker.stop()
+    #Call GTTS
+    myAudio = gTTS(text=clean_text, lang=language, slow=False)
+    #Save as mp3 file
+    myAudio.save("Audio.mp3")   
 
 # Example usage
 pdf_file_path = 'example.pdf'
-audio_output_path = 'output_audio.mp3'
-pdf_to_audio(pdf_file_path, audio_output_path)
+pdf_to_audio(pdf_file_path)
